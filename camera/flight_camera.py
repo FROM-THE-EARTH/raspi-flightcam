@@ -1,6 +1,7 @@
 
+import time
 import threading
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 
 import picamera
 
@@ -45,21 +46,40 @@ class FlightCamera:
         return self._handler.observe()
                 
     def start_record(self, 
-                     timeout: float = 1.,
+                     interval: Union[int, float] = 1.,
+                     timeout: Optional[Union[int, float]] = None,
                      blocking: bool = True) -> None:
+        if not isinstance(interval, (int, float)):
+            raise TypeError(
+                "'interval' must be int or float."
+            )
+        if not (isinstance(timeout, (int, float)) or timeout is None):
+            raise TypeError(
+                "'timeout' must be int, float or None."
+            )
+        
         if blocking:
-            self._start_record(timeout=timeout)
+            self._start_record(interval=interval)
         else:
-            self._thread = threading.Thread(target=self._start_record, kwargs={"timeout": timeout})
+            self._thread = threading.Thread(target=self._start_record, kwargs={"interval": interval})
             self._thread.start()
             
-    def _start_record(self, timeout: float = 1.):
+    def _start_record(self, 
+                      interval: Union[int, float] = 1.,
+                      timeout: Optional[Union[int, float]] = None):
         self._flag = False
         self._camera.start_recording(self._fname)
         
         try:
-            while not self.state and not self._flag:
-                self._camera.wait_recording(timeout=timeout)
+            if timeout is not None:
+                while not self.state and not self._flag:
+                    self._camera.wait_recording(timeout=interval)
+            else:
+                time_init = time.time()
+                while not self.state and not self._flag:
+                    if time.time() - time_init >= timeout:
+                        break
+                    self._camera.wait_recording(timeout=interval)
         finally:
             self._camera.stop_recording()
     
