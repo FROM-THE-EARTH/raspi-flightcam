@@ -59,9 +59,11 @@ class FlightCamera:
             )
         
         if blocking:
-            self._start_record(interval=interval)
+            self._start_record(interval=interval, timeout=timeout)
         else:
-            self._thread = threading.Thread(target=self._start_record, kwargs={"interval": interval})
+            self._thread = threading.Thread(target=self._start_record, 
+                                            kwargs={"interval": interval,
+                                                    "timeout": timeout})
             self._thread.start()
             
     def _start_record(self, 
@@ -71,7 +73,7 @@ class FlightCamera:
         self._camera.start_recording(self._fname)
         
         try:
-            if timeout is not None:
+            if timeout is None:
                 while not self.state and not self._flag:
                     self._camera.wait_recording(timeout=interval)
             else:

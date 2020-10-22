@@ -184,7 +184,7 @@ if __name__ == "__main__":
                         type=CameraArgs.format_resolution)
     
     args = parser.parse_args()
-    
+
     main(pin=CameraArgs.pin,
          interval=CameraArgs.interval,
          timeout=CameraArgs.timeout,
