@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 pigpio = "*"
 pisat = {git = "https://github.com/jjj999/pisat.git"}
+picamera = "*"
 
 [requires]
 python_version = "3.8"
