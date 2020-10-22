@@ -11,4 +11,4 @@ pisat = {git = "https://github.com/jjj999/pisat.git"}
 picamera = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.7"
