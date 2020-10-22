@@ -1,10 +1,3 @@
-#! python3
-"""
-Update local site-packages.
-
-This script make your debug faster.
-
-"""
 
 from os.path import join, expanduser, abspath, exists
 import shutil
