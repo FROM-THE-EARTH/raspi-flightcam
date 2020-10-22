@@ -1,6 +1,5 @@
 
 import argparse
-from socket import timeout
 from typing import Optional, Tuple
 
 import pigpio
