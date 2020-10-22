@@ -20,7 +20,7 @@ class FlightCamera:
             )
         
         if fname is None:
-            fname = get_time_stamp("mov", ".h264")
+            fname = get_time_stamp("mov", "h264")
             
         if isinstance(resolution, tuple):
             if len(resolution) != 2:
@@ -58,7 +58,7 @@ class FlightCamera:
         self._camera.start_recording(self._fname)
         
         try:
-            while not self.state or not self._flag:
+            while not self.state and not self._flag:
                 self._camera.wait_recording(timeout=timeout)
         finally:
             self._camera.stop_recording()
