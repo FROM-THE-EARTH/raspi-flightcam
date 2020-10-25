@@ -7,7 +7,7 @@
 pip または pipenv でインストール出来ます．
 
 ```bash:pip の場合
-$ pip install git+https://github.com/jjj999/nse2020.git
+$ python -m pip install git+https://github.com/jjj999/nse2020.git
 ```
 
 ```bash:pipenv の場合
