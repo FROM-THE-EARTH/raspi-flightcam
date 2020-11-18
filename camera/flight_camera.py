@@ -6,7 +6,7 @@ from typing import Optional, Tuple, Union
 import picamera
 
 from pisat.handler import DigitalInputHandlerBase
-from pisat.util import get_time_stamp
+from pisat.util.about_time import get_time_stamp
 
 
 class FlightCamera:
@@ -48,7 +48,8 @@ class FlightCamera:
     def start_record(self, 
                      interval: Union[int, float] = 1.,
                      timeout: Optional[Union[int, float]] = None,
-                     blocking: bool = True) -> None:
+                     blocking: bool = True,
+                     inv: bool = False) -> None:
         if not isinstance(interval, (int, float)):
             raise TypeError(
                 "'interval' must be int or float."
@@ -59,16 +60,22 @@ class FlightCamera:
             )
         
         if blocking:
-            self._start_record(interval=interval, timeout=timeout)
+            self._start_record(interval=interval, timeout=timeout, inv=inv)
         else:
             self._thread = threading.Thread(target=self._start_record, 
                                             kwargs={"interval": interval,
-                                                    "timeout": timeout})
+                                                    "timeout": timeout,
+                                                    "inv": inv})
             self._thread.start()
             
     def _start_record(self, 
                       interval: Union[int, float] = 1.,
-                      timeout: Optional[Union[int, float]] = None):
+                      timeout: Optional[Union[int, float]] = None,
+                      inv: bool = False):
+        if inv:
+            while self.state:
+                pass
+        
         self._flag = False
         self._camera.start_recording(self._fname)
         

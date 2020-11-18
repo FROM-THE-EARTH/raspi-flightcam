@@ -33,6 +33,7 @@ class CameraArgs(metaclass=PropertyMeta):
     OPTION_FNAME_S = "-f"
     OPTION_RESOLUTION = "--resolution"
     OPTION_RESOLUTION_S = "-r"
+    OPTION_INVERSE = "--inverse"
     
     DEFAULT_PIN: int = 17
     DEFAULT_INTERVAL: float = 1.
@@ -51,6 +52,7 @@ class CameraArgs(metaclass=PropertyMeta):
     _timeout = DEFAULT_TIMEOUT
     _fname = DEFAULT_FNAME
     _resolution = DEFAULT_RESOLUTION
+    is_inverse = False
     
     @classproperty
     def pin(cls):
@@ -184,19 +186,20 @@ class CameraArgs(metaclass=PropertyMeta):
                     "convertable into int."
                 )
         return cls.resolution
-
+    
 
 def main(pin: int = 17, 
          interval: float = 1.,
          timeout: Optional[float] = None,
          fname: Optional[str] = None,
-         resolution: Tuple = (640, 480)):
+         resolution: Tuple = (640, 480),
+         inv: bool = False):
 
     pi = pigpio.pi()
     handler = PigpioDigitalInputHandler(pi, pin, pulldown=True)
     camera = FlightCamera(handler, fname=fname, resolution=resolution)
 
-    camera.start_record(interval=interval, timeout=timeout)
+    camera.start_record(interval=interval, timeout=timeout, inv=inv)
 
 
 if __name__ == "__main__":
@@ -218,11 +221,16 @@ if __name__ == "__main__":
     parser.add_argument(CameraArgs.OPTION_RESOLUTION_S, 
                         CameraArgs.OPTION_RESOLUTION, 
                         type=CameraArgs.format_resolution)
+    parser.add_argument(CameraArgs.OPTION_INVERSE,
+                        action="store_true")
     
     args = parser.parse_args()
+    
+    CameraArgs.is_inverse = args.inverse
 
     main(pin=CameraArgs.pin,
          interval=CameraArgs.interval,
          timeout=CameraArgs.timeout,
          fname=CameraArgs.fname,
-         resolution=CameraArgs.resolution)
+         resolution=CameraArgs.resolution,
+         inv=CameraArgs.is_inverse)
