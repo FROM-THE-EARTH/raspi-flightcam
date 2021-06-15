@@ -4,11 +4,18 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+mkdocs-material = "*"
+mkdocstrings = "*"
 
 [packages]
-pigpio = "*"
-pisat = {git = "https://github.com/jjj999/pisat.git"}
 picamera = "*"
+pigpio = "*"
+pisat = "*"
+picam = {editable = true, path = "."}
 
 [requires]
 python_version = "3.7"
+
+[scripts]
+deploy-doc = "mkdocs gh-deploy --force"
+test = "python -m unittest discover -v"

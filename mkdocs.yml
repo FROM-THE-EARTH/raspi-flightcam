@@ -1,0 +1,49 @@
+site_name: picam
+site_description: Utilities for Raspberry Pi camera.
+site_url: https://FROM-THE-EARTH.github.io/picam
+
+docs_dir: docs
+repo_url: https://github.com/FROM-THE-EARTH/picam
+repo_name: FROM-THE-EARTH/picam
+copyright: Copyright &copy; 2021 Yunhyeon Jeong
+
+theme:
+  name: material
+  logo: res/fte.jpg
+  favicon: res/fte.jpg
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.expansion
+    - navigation.instant
+    - navigation.tabs
+    - navigation.top
+    - navigation.sections
+    - search.highlight
+  language: ja
+  palette:
+    primary: red
+
+nav:
+  - Home: index.md
+  - CLI: cli.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+extra:
+  alternate:
+    - name: 日本語
+      link: /
+      lang: ja
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/FROM-THE-EARTH/picam
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python

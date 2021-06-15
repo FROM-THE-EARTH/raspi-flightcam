@@ -1,4 +1,11 @@
 Pipfile.lock
+build/
+dist/
+*.drawio
+*.egg-info/
+.env
+*.log
 __pycache__/
+site/
 .vscode/
-local.sh
+playground/
